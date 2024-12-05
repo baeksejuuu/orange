@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chicken</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <label>
+            <div class="heart">
+                <img src="https://raw.githubusercontent.com/baeksejuuu/img/main/heart.png">
+            </div>
+            <input id="messageState" type="checkbox" style="display:none">
+        </label>
+        <div class="message">
+            <h1>Merry Christmas</h1> 
+            <p>Hi chicken! Merry Christmas and an early Happy New Year. With the people that make you happy, wishing you to have a great holiday season with them. May the new year bring you happiness, good health, and exciting adventures. ૮ ˶ᵔ ᵕ ᵔ˶ ა 
+            <br>
+
+            <div class="message-video">
+                <video id="myVideo" width="320" height="240" loop>
+                    <source src="catto.mp4" type="video/mp4">
+                </video>
+            </p> 
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        const video = document.getElementById("myVideo");
+        const message = document.querySelector(".message");
+        const messageState = document.getElementById("messageState");
+        const heart = document.querySelector(".heart");
+        let snowflakesInterval;
+        let snowflakesActive = false;
+
+        function playVideo() {
+            video.play();
+        }
+
+        function pauseVideo() {
+            video.pause();
+            video.currentTime = 0; 
+        }
+
+        message.addEventListener("animationend", function() {
+            if (messageState.checked) {
+                playVideo();
+            }
+        });
+
+        message.addEventListener("animationstart", function() {
+            if (!messageState.checked) {
+                pauseVideo();
+            }
+        });
+
+        video.autoplay = true;
+        video.muted = false;
+
+        messageState.addEventListener('change', function() {
+            if (messageState.checked) {
+                playVideo();
+            } else {
+                pauseVideo();
+            }
+        });
+
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            
+            const size = Math.random() * 8 + 5;
+            snowflake.style.width = size + 'px';
+            snowflake.style.height = size + 'px';
+            
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.animationDuration = Math.random() * 4 + 3 + 's';
+            snowflake.style.fontSize = size + 'px';
+            
+            document.body.appendChild(snowflake);
+        }
+
+        function startSnowfall() {
+            snowflakesInterval = setInterval(createSnowflake, 50); 
+        }
+
+        function stopSnowfall() {
+            clearInterval(snowflakesInterval);
+            const existingSnowflakes = document.querySelectorAll('.snowflake');
+            existingSnowflakes.forEach(snowflake => snowflake.remove());
+        }
+ 
+        heart.addEventListener('click', () => {
+            if (snowflakesActive) {
+                stopSnowfall();
+                snowflakesActive = false;
+            } else {
+                startSnowfall();
+                snowflakesActive = true;
+            }
+        });
+    </script>
+
+</body>
+</html>
